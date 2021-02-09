@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+    git:
+        build: sshd
+        container_name: git
+        environment:
+            - PGPASSWORD=41e8b73cbfc568deb1aa01592c600c66
+        volumes:
+            - ./volumes/sshd/home:/home
+            - ./volumes/sshd/var/log/supervisor:/var/log/superviso
+            - ./volumes/sshd:/sshd
+        ports:
+            - 2222:2222
+        depends_on:
+            - rabbitmq
+    # nginx:
+    #     image: nginx
+    #     command: /extra/start.sh
+    frontend:
+        build: frontend
+        container_name: docker-workshop-frontend
+        command: /code/start.sh
+        environment:
+            - PGPASSWORD=41e8b73cbfc568deb1aa01592c600c66
+        volumes:
+            - ./frontend:/code
+        ports:
+            - 8000:8000
+        depends_on:
+            - postgres
+    rabbitmq:
+        image: rabbitmq
+        container_name: rabbitmq
+    postgres:
+        image: postgres
+        container_name: postgres
+        environment:
+            - POSTGRES_PASSWORD=41e8b73cbfc568deb1aa01592c600c66
+        volumes:
+            - ./volumes/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+            - ./volumes/postgres/var/lib/postgresql:/var/lib/postgresql
