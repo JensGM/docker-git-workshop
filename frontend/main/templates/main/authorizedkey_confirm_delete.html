@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+<h1>Delete SSH Key</h1>
+
+<p>Are you sure delete this SSH key?</p>
+
+<h5>{{ authorizedkey.name }}</h5>
+<p>{{ authorizedkey.authorized_key }}</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+</form>
+
+{% endblock %}

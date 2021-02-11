@@ -1,4 +1,51 @@
 {% extends "main/base.html" %}
 {% block content %}
-    <h1>Docker Workshop</h1>
+<div class="jumbotron">
+    <p class="lead">Logged in as {{ user.username }}</p>
+
+    <div class="container">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Repositories
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        {% for repo in repositories %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ repo.name }}</h5>
+                                <a href="/repositories/{{ repo.pk }}/delete" class="btn btn-danger" role="button">Delete</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        SSH Keys
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        {% for key in authorized_keys %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ key.name }}</h5>
+                                <p class="card-text">{{ key.authorized_key }}</p>
+                                <a href="/authorized_keys/{{ key.pk }}/update" class="btn btn-primary" role="button">Edit</a>
+                                <a href="/authorized_keys/{{ key.pk }}/delete" class="btn btn-danger" role="button">Delete</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
