@@ -1,5 +1,7 @@
 # Architecture
 
+![architecture](./docker-git-architecture.png)
+
 ## Git
 
 The git host is a simple ssh / sftp server that can be connected to using git. The server listens to the message queue for user and repo creates and deletions.
