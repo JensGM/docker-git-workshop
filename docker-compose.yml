@@ -13,9 +13,6 @@ services:
             - 2222:2222
         depends_on:
             - rabbitmq
-    # nginx:
-    #     image: nginx
-    #     command: /extra/start.sh
     frontend:
         build: frontend
         container_name: docker-workshop-frontend
