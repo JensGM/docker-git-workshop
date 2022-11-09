@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': 'django',
         'USER': 'postgres',
         # 'PASSWORD': 'mypassword',
-        'HOST': 'postgres',
+        'HOST': 'postgres-service.default.svc.cluster.local',
         # 'PORT': '5432',
     }
 }

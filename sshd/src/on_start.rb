@@ -3,19 +3,20 @@
 require 'pg'
 
 begin
-    conn = PG.connect :host=>"postgres",
+    conn = PG.connect :host=>"postgres-service.default.svc.cluster.local",
                       :user=>"postgres",
-                      :dbname=>"postgres"
+                      :dbname=>"django"
     $stdout.puts "Comnected to database"
 
-    rows = conn.exec "select username from users"
+    rows = conn.exec "select username from auth_user"
     count = 0
     rows.each do |row|
-        if row =~ /^[a-z][-a-z0-9]*$/
-            `/create_user.sh #{row}`
+        username = row["username"]
+        if username =~ /^[a-z][-a-z0-9]*$/
+            `/create_user.sh #{username}`
             count += 1
         else
-            $stderr.puts "username #{row} is invalid"
+            $stderr.puts "username #{username} is invalid"
             $stderr.flush
         end
     end

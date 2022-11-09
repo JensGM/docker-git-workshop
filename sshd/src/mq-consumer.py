@@ -3,6 +3,7 @@ import logging
 import os
 import pika
 import re
+from pwd import getpwnam
 
 
 logging.basicConfig(level=logging.INFO)
@@ -33,6 +34,7 @@ def handle_user_msg(channel, method, properties, body):
                 f.write(authorized_keys)
             # Ensure correct permissions
             os.chmod(authorized_keys_path, 0o600)
+            os.chown(authorized_keys_path, getpwnam(username).pw_uid, -1)
         else:
             raise ValueError('Invalid user message {}'.format(body))
     except Exception as e:
@@ -72,7 +74,9 @@ def handle_repo_msg(channel, method, properties, body):
 
 
 def main():
-    connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(
+        'rabbitmq-service.default.svc.cluster.local'
+    ))
     channel = connection.channel()
 
     channel.queue_declare(queue='user')

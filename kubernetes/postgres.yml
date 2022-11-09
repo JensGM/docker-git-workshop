@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  selector:
+    matchLabels:
+      run: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: 'initdb'
+            mountPath: '/docker-entrypoint-initdb.d'
+            readOnly: true
+        ports:
+        - containerPort: 80
+        env:
+        - name: POSTGRES_PASSWORD
+          value: 41e8b73cbfc568deb1aa01592c600c66
+      # hostname: postgres
+      volumes:
+      - name: initdb
+        configMap:
+          name: postgres-initdb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  labels:
+    run: postgres
+spec:
+  ports:
+  - port: 5432
+  selector:
+    run: postgres
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-initdb
+data:
+  dynocore-initdb.sql: | 
+    CREATE DATABASE django;
+

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 echo python3 manage.py makemigrations
 python3 manage.py makemigrations
 echo python3 manage.py migrate

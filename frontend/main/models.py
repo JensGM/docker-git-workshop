@@ -10,7 +10,7 @@ from django.dispatch import receiver
 import pika
 
 
-RABBITMQ_HOST = 'rabbitmq'
+RABBITMQ_HOST = 'rabbitmq-service.default.svc.cluster.local'
 
 
 @contextmanager

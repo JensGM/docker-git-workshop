@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+spec:
+  selector:
+    matchLabels:
+      run: rabbitmq
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5672
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+  labels:
+    run: rabbitmq
+spec:
+  ports:
+  - port: 5672
+  selector:
+    run: rabbitmq
+

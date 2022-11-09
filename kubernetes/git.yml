@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: git-deployment
+spec:
+  selector:
+    matchLabels:
+      run: git
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: git
+    spec:
+      containers:
+      - name: git
+        image: git
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 2222
+        env:
+        - name: PGPASSWORD
+          value: 41e8b73cbfc568deb1aa01592c600c66
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: git-service
+  labels:
+    run: git
+spec:
+  ports:
+  - port: 2222
+  selector:
+    run: git
+
